@@ -42,15 +42,15 @@ def separate_img(img, display=False):
     
 def divide_image(path_in, path_out, name, size, divide=True):
     
-    histo   = tifffile.imread(path_in + name + '.ndpi', key=2)
-    [w,h,_] = histo.shape
+    histo   = tifffile.imread(path_in + name + '.ndpi', key=1)
     print(histo.shape)
-    count   = 14760
+    [w,h,_] = histo.shape
+    count   = 0
     total   = int(w/size) * int(h/size)
     print(total)
     
     if divide:
-        for i in range(90,121):#int(w/size)
+        for i in range(int(w/size)):
             for j in range(int(h/size)):
                 img = histo[i*size:(i+1)*size, j*size:(j+1)*size, :] 
                 cv2.imwrite(path_out + name + '_' + str(size) + '_' + str(count) + '.png', img)
@@ -64,13 +64,17 @@ def divide_image(path_in, path_out, name, size, divide=True):
             
   
 slices = {
-    'HMU_010_FH': ['A2']    #['A2','A3','A5','A6']
+     #'HMU_113_MT' : ['A2'],
+     #'HMU_116_BC' : ['A2']
+     #'HMU_118_PL' : ['A3']
+     'HMU_119_MM' : ['A4']
+     #'HMU_128_RK' : ['A5']
     }
   
 def main():        
     for sid in slices:
         for i in range(len(slices[sid])):
             name = sid + '_' + slices[sid][i]
-            divide_image(sid+'/',  sid + '/' , name, 320, True) 
+            divide_image('',  sid + '/' , name, 512, True) 
             
 main() 
