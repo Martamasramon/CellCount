@@ -40,25 +40,28 @@ def separate_img(img, display=False):
     return img_h
     
     
-def divide_image(path_in, path_out, name, size, divide=True):
+def divide_image(path_in, path_out, name, size):
     
     histo   = tifffile.imread(path_in + name + '.ndpi', key=1)
-    print(histo.shape)
+    
+    print('Shape:',histo.shape)
     [w,h,_] = histo.shape
+    
     count   = 0
     total   = int(w/size) * int(h/size)
-    print(total)
+    print('Number of tiles:',total)
     
-    if divide:
-        for i in range(int(w/size)):
-            for j in range(int(h/size)):
-                img = histo[i*size:(i+1)*size, j*size:(j+1)*size, :] 
-                cv2.imwrite(path_out + name + '_' + str(size) + '_' + str(count) + '.png', img)
-                #img = separate_img(img)*255
-                count += 1
-                
-                if count%1000 == 0:
-                    print('Sub-image count: ' + str(count) + ' (' + str(count/total*100) + '%)')
+    if not os.path.exists(path_out):
+        os.mkdir(path_out)   
+            
+    for i in range(int(w/size)):
+        for j in range(int(h/size)):
+            img = histo[i*size:(i+1)*size, j*size:(j+1)*size, :] 
+            cv2.imwrite(path_out + name + '_' + str(size) + '_' + str(count) + '.png', img)
+            count += 1
+            
+            if count%1000 == 0:
+                print('Sub-image count: ' + str(count) + ' (' + str(count/total*100) + '%)')
                     
                     
             
@@ -67,14 +70,16 @@ slices = {
      #'HMU_113_MT' : ['A2'],
      #'HMU_116_BC' : ['A2']
      #'HMU_118_PL' : ['A3']
-     'HMU_119_MM' : ['A4']
+     #'HMU_119_MM' : ['A4']
      #'HMU_128_RK' : ['A5']
+     'HMU_174_IJ': ['A3']
     }
   
-def main():        
+def main(): 
+    folder = './Whole images/'       
     for sid in slices:
         for i in range(len(slices[sid])):
             name = sid + '_' + slices[sid][i]
-            divide_image('',  sid + '/' , name, 512, True) 
+            divide_image(folder,  sid + '/' , name, 512) 
             
 main() 
