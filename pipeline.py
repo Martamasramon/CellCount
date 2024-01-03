@@ -1,48 +1,32 @@
 import os
 import cv2
 import tifffile
-import numpy as np
-import matplotlib.pyplot as plt
-from skimage.color import rgb2hed, hed2rgb
-
+from PIL import Image
+    
+def resize_histo_png(folder_in, folder_out, sid, slices, size=600, key=2):      
+          
+    for i in range(len(slices)):
+        # Read NDPI image
+        path    = os.path.join(folder_in, sid + '_' +slices[i] + '.ndpi')
+        histo   = tifffile.imread(path, key=key)
             
-def separate_img(img, display=False):
-    # Separate the stains from the img image
-    img_hed = rgb2hed(img)
-
-    # Create an RGB image for each of the stains
-    null = np.zeros_like(img_hed[:, :, 0])
-    img_h = hed2rgb(np.stack((img_hed[:, :, 0], null, null), axis=-1))
-    img_e = hed2rgb(np.stack((null, img_hed[:, :, 1], null), axis=-1))
-    img_d = hed2rgb(np.stack((null, null, img_hed[:, :, 2]), axis=-1))
-
-    if display:
-        fig, axes = plt.subplots(2, 2, figsize=(7, 6), sharex=True, sharey=True)
-        ax = axes.ravel()
-
-        ax[0].imshow(img)
-        ax[0].set_title("Original image")
-
-        ax[1].imshow(img_h)
-        ax[1].set_title("Hematoxylin")
-
-        ax[2].imshow(img_e)
-        ax[2].set_title("Eosin")  # Note that there is no Eosin stain in this image
-
-        ax[3].imshow(img_d)
-        ax[3].set_title("DAB")
-
-        for a in ax.ravel():
-            a.axis('off')
-
-        fig.tight_layout()
+        # Get original image size
+        print(sid, slices[i], histo.shape)
+        [w,h,_]     = histo.shape
         
-    return img_h
+        # Reshape image
+        histo_img   = Image.fromarray(histo)
+        histo_img   = histo_img.resize((int(size/w*h), size))
+        
+        # 2x2mm patches for manju
+        # histo_img   = histo_img.resize((int(h/size), int(w/size)))
+        
+        # Save as png
+        histo_img.save(os.path.join(folder_out, sid + '_' +slices[i]) + '_downscale.png')
     
-    
-def divide_image(path_in, path_out, name, size):
-    
-    histo   = tifffile.imread(path_in + name + '.ndpi', key=1)
+def divide_image(path_in, path_out, name, size=512, key=1):
+    print(name)
+    histo   = tifffile.imread(path_in + name + '.ndpi', key=key)
     
     print('Shape:',histo.shape)
     [w,h,_] = histo.shape
@@ -53,7 +37,8 @@ def divide_image(path_in, path_out, name, size):
     
     if not os.path.exists(path_out):
         os.mkdir(path_out)   
-            
+     
+          
     for i in range(int(w/size)):
         for j in range(int(h/size)):
             img = histo[i*size:(i+1)*size, j*size:(j+1)*size, :] 
@@ -61,25 +46,41 @@ def divide_image(path_in, path_out, name, size):
             count += 1
             
             if count%1000 == 0:
-                print('Sub-image count: ' + str(count) + ' (' + str(count/total*100) + '%)')
-                    
-                    
-            
+                print('Sub-image count: ' + str(count) + ' (' + str(count/total*100) + '%)')             
   
 slices = {
-     #'HMU_113_MT' : ['A2'],
-     #'HMU_116_BC' : ['A2']
-     #'HMU_118_PL' : ['A3']
-     #'HMU_119_MM' : ['A4']
-     #'HMU_128_RK' : ['A5']
-     'HMU_174_IJ': ['A3']
-    }
-  
+    #'HMU_033_JS': {'key': 2, 'nums': ['A3']},
+    #'HMU_038_JC': {'key': 2, 'nums': ['A2']},
+    #'HMU_056_JH': {'key': 2, 'nums': ['A5']},
+    #'HMU_063_RS': {'key': 2, 'nums': ['A2']},
+    #'HMU_065_RH': {'key': 2, 'nums': ['A4']},
+    #'HMU_066_JF': {'key': 2, 'nums': ['A2']},
+    #'HMU_067_MS': {'key': 2, 'nums': ['A3']},
+    #'HMU_068_PB': {'key': 1, 'nums': ['A3']},
+    #'HMU_069_NS': {'key': 2, 'nums': ['A4']}
+    #'HMU_076_RV': {'key': 2, 'nums': ['A4']},
+    #'HMU_077_MW': {'key': 2, 'nums': ['A3']},
+    #'HMU_084_AJ': {'key': 1, 'nums': ['A2','A3']},
+    #'HMU_087_FM': {'key': 1, 'nums': ['A3']},
+    #'HMU_094_RB': {'key': 1, 'nums': ['A1','A3']},
+    #'HMU_099_DL': {'key': 1, 'nums': ['A4','A7']},
+    'HMU_121_CN': {'key': 1, 'nums': ['A1']}
+}
+ 
 def main(): 
-    folder = './Whole images/'       
+    RESIZE       = True
+    MAKE_PATCHES = False
+    folder_in  = './Whole images/'  
+    folder_out = './Downsampled/'  
+    
     for sid in slices:
-        for i in range(len(slices[sid])):
-            name = sid + '_' + slices[sid][i]
-            divide_image(folder,  sid + '/' , name, 512) 
+        if RESIZE:
+            resize_histo_png(folder_in, folder_out, sid, slices[sid]['nums'], key=1)
+        
+        if MAKE_PATCHES:
+            for i in range(len(slices[sid]['nums'])):
+                name = sid + '_' + slices[sid]['nums'][i]
+                divide_image(folder_in,  'Patches/' + name + '/' , name, 512, key=slices[sid]['key']) 
+                #for manju, size=4406
             
-main() 
+main()  

@@ -1,11 +1,11 @@
 #$ -l tmem=80G,h_vmem=80G
-#$ -l h_rt=2:00:00
+#$ -l h_rt=10:00:00
 
 #$ -S /bin/bash
 #$ -j y
-#$ -N Sub-Images
+#$ -N Patches
 #$ -V
-#$ -wd /home/mmasramo/CellCount
+#$ -wd /cluster/project7/ProsRegNet_CellCount/Cellcount
 
 hostname
 
