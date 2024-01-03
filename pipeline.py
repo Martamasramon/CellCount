@@ -1,10 +1,10 @@
 import os
 import cv2
 import tifffile
-from PIL import Image
+from PIL import Image, ImageOps 
     
 def resize_histo_png(folder_in, folder_out, sid, slices, size=600, key=2):      
-          
+        
     for i in range(len(slices)):
         # Read NDPI image
         path    = os.path.join(folder_in, sid + '_' +slices[i] + '.ndpi')
@@ -13,9 +13,9 @@ def resize_histo_png(folder_in, folder_out, sid, slices, size=600, key=2):
         # Get original image size
         print(sid, slices[i], histo.shape)
         [w,h,_]     = histo.shape
+        histo_img   = Image.fromarray(histo)
         
         # Reshape image
-        histo_img   = Image.fromarray(histo)
         histo_img   = histo_img.resize((int(size/w*h), size))
         
         # 2x2mm patches for manju
@@ -23,6 +23,7 @@ def resize_histo_png(folder_in, folder_out, sid, slices, size=600, key=2):
         
         # Save as png
         histo_img.save(os.path.join(folder_out, sid + '_' +slices[i]) + '_downscale.png')
+        
     
 def divide_image(path_in, path_out, name, size=512, key=1):
     print(name)
@@ -64,18 +65,21 @@ slices = {
     #'HMU_087_FM': {'key': 1, 'nums': ['A3']},
     #'HMU_094_RB': {'key': 1, 'nums': ['A1','A3']},
     #'HMU_099_DL': {'key': 1, 'nums': ['A4','A7']},
-    'HMU_121_CN': {'key': 1, 'nums': ['A1']}
+    #'HMU_121_CN': {'key': 1, 'nums': ['A1']}
+    'HMU_180_KF': {'key':1, 'nums':['A3']}
 }
- 
+
 def main(): 
+    # Choose pipeline options
     RESIZE       = True
     MAKE_PATCHES = False
+    
     folder_in  = './Whole images/'  
     folder_out = './Downsampled/'  
     
     for sid in slices:
         if RESIZE:
-            resize_histo_png(folder_in, folder_out, sid, slices[sid]['nums'], key=1)
+            resize_histo_png(folder_in, folder_out, sid, slices[sid]['nums'])
         
         if MAKE_PATCHES:
             for i in range(len(slices[sid]['nums'])):
