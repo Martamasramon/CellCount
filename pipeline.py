@@ -2,6 +2,7 @@ import os
 import cv2
 import tifffile
 import numpy as np
+from PIL import Image
     
 def resize_histo_png(folder_in, folder_out, sid, slices, size=600, key=2, factor=100, tif=False):      
         
@@ -16,12 +17,12 @@ def resize_histo_png(folder_in, folder_out, sid, slices, size=600, key=2, factor
         histo_img   = Image.fromarray(histo)
         
         # Reshape image
-        histo_img   = histo_img.resize((int(size/w*h), size))
-        print(int(size/w*h), size)
+        # histo_img   = histo_img.resize((int(size/w*h), size))
+        # print(int(size/w*h), size)
         
         # 2x2mm patches for manju
-        #print(int(h/factor), int(w/factor))
-        #histo_img   = histo_img.resize((int(h/factor), int(w/factor)))
+        print(int(h/factor), int(w/factor))
+        histo_img   = histo_img.resize((int(h/factor), int(w/factor)))
         
         if tif:
             # Save as tif
@@ -94,7 +95,7 @@ slices = {
     #'HMU_069_NS': {'key': 2, 'nums': ['A4']}
     #'HMU_076_RV': {'key': 2, 'nums': ['A4']},
     #'HMU_077_MW': {'key': 2, 'nums': ['A3']},
-    'HMU_082_PS': {'key': 2, 'nums':['A3']}
+    #'HMU_082_PS': {'key': 2, 'nums':['A3']}
     #'HMU_084_AJ': {'key': 1, 'nums': ['A2']}, #,'A3']},
     #'HMU_087_FM': {'key': 1, 'nums': ['A3']},
     #'HMU_094_RB': {'key': 1, 'nums': ['A1','A3']},
@@ -105,6 +106,9 @@ slices = {
     #'HMU_180_KF': {'key':2, 'nums':['A3','A4','A5']},
     #'HMU_198_JL': {'key': 0, 'nums': ['A2']},
     #'HMU_201_MB': {'key': 2, 'nums': ['A3']} 
+    'HMU_227_KT': {'key': 0, 'nums': ['A3']},
+    'HMU_235_CC': {'key': 0, 'nums': ['A7']},
+    'HMU_256_DB': {'key': 0, 'nums': ['A8']}
     # 'HMU_242_JD': {'key': 0, 'nums': ['A5']}, # too dark...?
     # 'HMU_245_DC': {'key': 0, 'nums': ['A7']},
     # 'HMU_256_DB': {'key': 0, 'nums': ['A6']},
@@ -122,14 +126,13 @@ def main():
     
     for sid in slices:
         if RESIZE:
-            resize_histo_png(folder_in, folder_out, sid, slices[sid]['nums'],key=slices[sid]['key'])
+            resize_histo_png(folder_in, folder_out, sid, slices[sid]['nums'],factor=30,key=slices[sid]['key'])
             # for manju, size =30
         
         if MAKE_PATCHES:
             for i in range(len(slices[sid]['nums'])):
                 name = sid + '_' + slices[sid]['nums'][i]
-                divide_image(folder_in,  'Patches/' + name + '/' , name, 512, key=slices[sid]['key'])   #for manju, size=4406
-                # For images with key=0:
-                # divide_image_reshape(folder_in,  'Patches/' + name + '/' , name, 512, key=slices[sid]['key'])
+                divide_image(folder_in,  'Patches/' + name + '/' , name, size=4406, key=slices[sid]['key'])   
+                #for manju, size=4406
             
 main()  
