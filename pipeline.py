@@ -118,8 +118,8 @@ slices = {
 
 def main(): 
     # Choose pipeline options
-    RESIZE       = True
-    MAKE_PATCHES = False
+    RESIZE       = False
+    MAKE_PATCHES = True
     
     folder_in  = './Whole images/'  
     folder_out = './Downsampled/'  
