@@ -132,7 +132,7 @@ def main():
         if MAKE_PATCHES:
             for i in range(len(slices[sid]['nums'])):
                 name = sid + '_' + slices[sid]['nums'][i]
-                divide_image(folder_in,  'Patches/' + name + '/' , name, size=4406, key=slices[sid]['key'])   
+                divide_image(folder_in,  'Patches/' + name + '/' , name, size=1740, key=slices[sid]['key'])   
                 #for manju, size=4406
             
 main()  
