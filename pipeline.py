@@ -105,10 +105,10 @@ slices = {
     #'HMU_176_IJ': {'key': 2, 'nums': ['A3']}, 
     #'HMU_180_KF': {'key':2, 'nums':['A3','A4','A5']},
     #'HMU_198_JL': {'key': 0, 'nums': ['A2']},
-    'HMU_201_MB': {'key': 2, 'nums': ['A3']} ,
-    'HMU_227_KT': {'key': 0, 'nums': ['A3']},
-    'HMU_235_CC': {'key': 0, 'nums': ['A7']},
-    'HMU_256_DB': {'key': 0, 'nums': ['A8']}
+    #'HMU_201_MB': {'key': 2, 'nums': ['A3']} ,
+    'HMU_227_KT': {'key': 1, 'nums': ['A3']},
+    'HMU_235_CC': {'key': 1, 'nums': ['A7']},
+    'HMU_256_DB': {'key': 1, 'nums': ['A8']}
     # 'HMU_242_JD': {'key': 0, 'nums': ['A5']}, # too dark...?
     # 'HMU_245_DC': {'key': 0, 'nums': ['A7']},
     # 'HMU_256_DB': {'key': 0, 'nums': ['A6']},
