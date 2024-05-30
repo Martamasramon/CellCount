@@ -104,7 +104,7 @@ slices = {
     #'HMU_121_CN': {'key': 1, 'nums': ['A1']}
     #'HMU_176_IJ': {'key': 2, 'nums': ['A3']}, 
     #'HMU_180_KF': {'key':2, 'nums':['A3','A4','A5']},
-    'HMU_181_MO': {'key':2, 'nums':['A2']},
+    #'HMU_181_MO': {'key':2, 'nums':['A2']},
     #'HMU_198_JL': {'key': 0, 'nums': ['A2']},
     #'HMU_201_MB': {'key': 2, 'nums': ['A3']} ,
     'HMU_227_KT': {'key': 1, 'nums': ['A3']},
