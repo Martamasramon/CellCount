@@ -10,7 +10,7 @@ def resize_histo_png(folder_in, folder_out, sid, slices, size=600, key=2, factor
         # Read NDPI image
         path    = os.path.join(folder_in, sid + '_' +slices[i] + '.ndpi')
         histo   = tifffile.imread(path, key=key)
-            
+                    
         # Get original image size
         print(sid, slices[i], histo.shape)
         [w,h,_]     = histo.shape
@@ -105,7 +105,7 @@ slices = {
     #'HMU_176_IJ': {'key': 2, 'nums': ['A3']}, 
     #'HMU_180_KF': {'key':2, 'nums':['A3','A4','A5']},
     #'HMU_198_JL': {'key': 0, 'nums': ['A2']},
-    #'HMU_201_MB': {'key': 2, 'nums': ['A3']} 
+    'HMU_201_MB': {'key': 2, 'nums': ['A3']} ,
     'HMU_227_KT': {'key': 0, 'nums': ['A3']},
     'HMU_235_CC': {'key': 0, 'nums': ['A7']},
     'HMU_256_DB': {'key': 0, 'nums': ['A8']}
@@ -119,7 +119,7 @@ slices = {
 def main(): 
     # Choose pipeline options
     RESIZE       = True
-    MAKE_PATCHES = True
+    MAKE_PATCHES = False
     
     folder_in  = './Whole images/'  
     folder_out = './Downsampled/'  
