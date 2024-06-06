@@ -1,5 +1,5 @@
 #$ -l tmem=64G,h_vmem=64G
-#$ -l h_rt=10:00:00
+#$ -l h_rt=5:00:00
 
 #$ -S /bin/bash
 #$ -j y

@@ -84,6 +84,7 @@ def divide_image_reshape(path_in, path_out, name, size=512, key=1):
                 print('Sub-image count: ' + str(count) + ' (' + str(count/total*100) + '%)')   
                 
 slices = {
+
     #'HMU_033_JS': {'key': 2, 'nums': ['A3']},
     #'HMU_038_JC': {'key': 2, 'nums': ['A2']},
     #'HMU_056_JH': {'key': 2, 'nums': ['A5']},
@@ -102,9 +103,9 @@ slices = {
     #'HMU_099_DL': {'key': 1, 'nums': ['A4','A7']},
     #'HMU_113_MT': {'key': 1, 'nums': ['A2']}, 
     #'HMU_121_CN': {'key': 1, 'nums': ['A1']}
-    #'HMU_176_IJ': {'key': 2, 'nums': ['A3']}, 
+    'HMU_176_IJ': {'key': 2, 'nums': ['A4']}, 
     #'HMU_180_KF': {'key':2, 'nums':['A3','A4','A5']},
-    #'HMU_181_MO': {'key':2, 'nums':['A2']},
+    'HMU_181_MO': {'key':2, 'nums':['A2']},
     #'HMU_198_JL': {'key': 0, 'nums': ['A2']},
     #'HMU_201_MB': {'key': 2, 'nums': ['A3']} ,
     'HMU_227_KT': {'key': 1, 'nums': ['A3']},
@@ -119,10 +120,10 @@ slices = {
 
 def main(): 
     # Choose pipeline options
-    RESIZE       = False
-    MAKE_PATCHES = True
+    RESIZE       = True
+    MAKE_PATCHES = False
     
-    folder_in  = './Whole images/'  
+    folder_in  = '../../backup_masramon/Histology/NDPI/'
     folder_out = './Downsampled/'  
     
     for sid in slices:
@@ -134,6 +135,6 @@ def main():
             for i in range(len(slices[sid]['nums'])):
                 name = sid + '_' + slices[sid]['nums'][i]
                 divide_image(folder_in,  'Patches/' + name + '/' , name, size=1740, key=slices[sid]['key'])   
-                #for manju, size=4406
+                #for manju, size=1740
             
 main()  

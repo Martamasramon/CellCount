@@ -73,19 +73,39 @@ def divide_image(path_in, path_out, name, target_means, img_means, size=512, key
           
     for i in range(int(w/size)):
         for j in range(int(h/size)):
+            count += 1
+            # if count < 9000:
+            #     continue 
+            # else:
             img     = histo[i*size:(i+1)*size, j*size:(j+1)*size, :] 
             new_img = convert_and_scale_img(img, target_means, img_means)
             
             cv2.imwrite(path_out + name + '_' + str(size) + '_' + str(count) + '.png', new_img)
-            count += 1
             
             if count%1000 == 0:
                 print('Sub-image count: ' + str(count) + ' (' + str(count/total*100) + '%)')       
 
 slices = {
+    # 'HMU_056_JH': {'key': 2, 'nums': ['A4','A5']}, 
+    # 'HMU_060_CH': {'key': 2, 'nums': ['A4']}, 
+    # 'HMU_064_SB': {'key': 2, 'nums': ['A6']}, 
+    # 'HMU_065_RH': {'key': 2, 'nums': ['A4']}, 
+    # 'HMU_069_NS': {'key': 2, 'nums': ['A4']}, 
+    # 'HMU_077_MW': {'key': 1, 'nums': ['A2']}, 
+    # 'HMU_077_MW': {'key': 2, 'nums': ['A3']}, 
+    
+    'HMU_087_FM': {'key': 1, 'nums': ['A3b','A4']}, 
+    'HMU_118_PL': {'key': 1, 'nums': ['A3']}, 
+    'HMU_119_MM': {'key': 1, 'nums': ['A3']}, 
+    'HMU_198_JL': {'key': 2, 'nums': ['A3']}, 
+    'HMU_227_KT': {'key': 2, 'nums': ['A3']}, 
+    'HMU_256_DB': {'key': 2, 'nums': ['A3']}, 
+    'HMU_265_JM': {'key': 2, 'nums': ['A3']}, 
+    
+    
     # 'HMU_010_FH': {'key': 2, 'nums': ['A2']}, 
     # 'HMU_011_MQ': {'key': 2, 'nums': ['A8']}, 
-    'HMU_038_JC': {'key': 2, 'nums': ['A2']},
+    # 'HMU_038_JC': {'key': 2, 'nums': ['A2']},
     # 'HMU_063_RS': {'key': 2, 'nums': ['A2']},
     # 'HMU_066_JF': {'key': 2, 'nums': ['A2']},
     # 'HMU_076_RV': {'key': 2, 'nums': ['A4']},
@@ -104,10 +124,10 @@ target_means = np.mean(data,axis=0)
 def main(): 
 
     GET_MEAN  = False
-    SCALE_IMG = True
-    PATCHES   = False
+    SCALE_IMG = False
+    PATCHES   = True
     
-    folder_in      = './Whole images/'  
+    folder_in      = '../../backup_masramon/Histology/NDPI/'  
     folder_down    = './Downsampled/'
     folder_patches = './Patches/'
     
@@ -130,14 +150,14 @@ def main():
             print(sid, ':')
             for s in slices[sid]['nums']:
                 print('- ', s)
-                scale_hsv(folder_in, folder_down, sid, s, target_means, key=slices[sid]['key'])    
+                scale_hsv(folder_in + sid + '/', folder_down, sid, s, target_means, key=slices[sid]['key'])    
                 
     if PATCHES:
         for sid in slices:
             print(sid, ':')
             for s in slices[sid]['nums']:
                 print('- ', s)
-                img_means = check_hsv(folder_in, sid, s, key=slices[sid]['key'])
-                divide_image(folder_in, folder_patches+sid+'_'+s+'_SN/', sid+'_'+s, target_means, img_means, key=slices[sid]['key'])   
+                img_means = check_hsv(folder_in + sid + '/', sid, s, key=slices[sid]['key'])
+                divide_image(folder_in + sid + '/', folder_patches+sid+'_'+s+'_SN/', sid+'_'+s, target_means, img_means, key=slices[sid]['key'])   
     
 main()  
