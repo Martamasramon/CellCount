@@ -1,11 +1,11 @@
 #$ -l tmem=64G,h_vmem=64G
-#$ -l h_rt=5:00:00
+#$ -l h_rt=06:00:00
 
 #$ -S /bin/bash
 #$ -j y
 #$ -N Test
 #$ -V
-#$ -wd /cluster/project7/ProsRegNet_CellCount/Cellcount
+#$ -wd /cluster/project7/ProsRegNet_CellCount/Cellcount/
 
 hostname
 
@@ -16,4 +16,4 @@ export LD_LIBRARY_PATH=/share/apps/python-3.8.5-shared/lib:$LD_LIBRARY_PATH
 
 python3 simple_SN.py
 
-dat
+date

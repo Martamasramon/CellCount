@@ -103,13 +103,13 @@ slices = {
     #'HMU_099_DL': {'key': 1, 'nums': ['A4','A7']},
     #'HMU_113_MT': {'key': 1, 'nums': ['A2']}, 
     #'HMU_121_CN': {'key': 1, 'nums': ['A1']}
-    'HMU_176_IJ': {'key': 2, 'nums': ['A4']}, 
+    # 'HMU_176_IJ': {'key': 2, 'nums': ['A4']}, 
     #'HMU_180_KF': {'key':2, 'nums':['A3','A4','A5']},
     'HMU_181_MO': {'key':2, 'nums':['A2']},
     #'HMU_198_JL': {'key': 0, 'nums': ['A2']},
     #'HMU_201_MB': {'key': 2, 'nums': ['A3']} ,
-    'HMU_227_KT': {'key': 1, 'nums': ['A3']},
-    'HMU_235_CC': {'key': 1, 'nums': ['A7']},
+    # 'HMU_227_KT': {'key': 1, 'nums': ['A3']},
+    # 'HMU_235_CC': {'key': 1, 'nums': ['A7']},
     'HMU_256_DB': {'key': 1, 'nums': ['A8']}
     # 'HMU_242_JD': {'key': 0, 'nums': ['A5']}, # too dark...?
     # 'HMU_245_DC': {'key': 0, 'nums': ['A7']},
@@ -128,13 +128,13 @@ def main():
     
     for sid in slices:
         if RESIZE:
-            resize_histo_png(folder_in, folder_out, sid, slices[sid]['nums'],factor=30,key=slices[sid]['key'])
+            resize_histo_png(folder_in+sid+'/', folder_out, sid, slices[sid]['nums'],factor=30,key=slices[sid]['key'])
             # for manju, size =30
         
         if MAKE_PATCHES:
             for i in range(len(slices[sid]['nums'])):
                 name = sid + '_' + slices[sid]['nums'][i]
-                divide_image(folder_in,  'Patches/' + name + '/' , name, size=1740, key=slices[sid]['key'])   
+                divide_image(folder_in+sid+'/',  'Patches/' + name + '/' , name, size=1740, key=slices[sid]['key'])   
                 #for manju, size=1740
             
 main()  
